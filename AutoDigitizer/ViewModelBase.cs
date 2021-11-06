@@ -11,7 +11,7 @@ namespace AutoDigitizer {
     /// The base class for View Model classes.
     /// All classes for View Model should be inherited this class.
     /// </summary>
-    internal class ViewModelBase : INotifyPropertyChanged {
+    public class ViewModelBase : INotifyPropertyChanged {
         public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
