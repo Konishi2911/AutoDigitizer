@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AutoDigitizer"
+        xmlns:b="clr-namespace:AutoDigitizer.Behavior"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Window.DataContext>
@@ -28,5 +29,12 @@
         </StackPanel>
         <Image Grid.Column="1" Margin="10,10,10,10" Source="{Binding ImageSource}">
         </Image>
+        <Canvas Grid.Column="1" Margin="10,10,10,10" Panel.ZIndex="1" Background="Transparent"
+                b:CanvasMouseDraggingBehavior.StartPos="{Binding AxisStartPos, Mode=TwoWay}"
+                b:CanvasMouseDraggingBehavior.CursorPos="{Binding AxisEndPos, Mode=TwoWay}">
+            <Rectangle Stroke="Black" StrokeThickness="2"
+                       Width="{Binding AxisWidth}" Height="{Binding AxisHeight}" 
+                       Canvas.Left="{Binding AxisLeft}" Canvas.Top="{Binding AxisTop}"/>
+        </Canvas>
     </Grid>
 </Window>
