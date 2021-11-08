@@ -14,7 +14,7 @@ namespace AutoDigitizer.Behavior {
             name: "StartPos",
             propertyType: typeof(Point?),
             ownerType: typeof(CanvasMouseDraggingBehavior),
-            defaultMetadata: new PropertyMetadata(null, MouseEventCallback)
+            defaultMetadata: new PropertyMetadata(null, RegisterMouseEventCallback)
         );
         public static Point GetStartPos(DependencyObject target) => (Point)target.GetValue(StartPosProperty);
         public static void SetStartPos(DependencyObject target, Point? value) => target.SetValue(StartPosProperty, value);
@@ -23,7 +23,7 @@ namespace AutoDigitizer.Behavior {
             name: "EndPos",
             propertyType: typeof(Point?),
             ownerType: typeof(CanvasMouseDraggingBehavior),
-            defaultMetadata: new FrameworkPropertyMetadata(null, MouseEventCallback)
+            defaultMetadata: new FrameworkPropertyMetadata(null, RegisterMouseEventCallback)
         );
         public static Point GetEndPos(DependencyObject target) => (Point)target.GetValue(EndPosProperty);
         public static void SetEndPos(DependencyObject target, Point? value) => target.SetValue(EndPosProperty, value);
@@ -32,10 +32,19 @@ namespace AutoDigitizer.Behavior {
             name: "CursorPos",
             propertyType: typeof(Point?),
             ownerType: typeof(CanvasMouseDraggingBehavior),
-            defaultMetadata: new FrameworkPropertyMetadata(null, MouseEventCallback)
+            defaultMetadata: new FrameworkPropertyMetadata(null, RegisterMouseEventCallback)
         );
         public static Point GetCursorPos(DependencyObject target) => (Point)target.GetValue(CursorPosProperty);
         public static void SetCursorPos(DependencyObject target, Point? value) => target.SetValue(CursorPosProperty, value);
+
+        public static readonly DependencyProperty EnableDraggingProperty = DependencyProperty.RegisterAttached(
+            name: "EnableDragging",
+            propertyType: typeof(bool),
+            ownerType: typeof(CanvasMouseDraggingBehavior),
+            defaultMetadata: new FrameworkPropertyMetadata(false, RegisterMouseEventCallback)
+        );
+        public static bool GetEnableDragging(DependencyObject target) => (bool)target.GetValue(EnableDraggingProperty);
+        public static void SetEnableDragging(DependencyObject target, bool value) => target.SetValue(EnableDraggingProperty, value);
 
 
         private static void MouseClicked(object? sender, MouseEventArgs e) {
@@ -62,14 +71,23 @@ namespace AutoDigitizer.Behavior {
             }
         }
 
-        private static void MouseEventCallback(DependencyObject? sender, DependencyPropertyChangedEventArgs e) {
+        private static void RegisterMouseEventCallback(DependencyObject? sender, DependencyPropertyChangedEventArgs e) {
             if (sender is not Canvas) return;
             Canvas canvas = (Canvas)sender;
 
-            canvas.MouseDown += MouseClicked;
-            canvas.MouseLeave += MouseLeft;
-            canvas.MouseUp += MouseLeft;
-            canvas.MouseMove += GetMousePosition;
+            if (e.Property.Name == "EnableDragging") {
+                if ((bool)e.NewValue) {
+                    canvas.MouseDown += MouseClicked;
+                    canvas.MouseLeave += MouseLeft;
+                    canvas.MouseUp += MouseLeft;
+                    canvas.MouseMove += GetMousePosition;
+                } else {
+                    canvas.MouseDown -= MouseClicked;
+                    canvas.MouseLeave -= MouseLeft;
+                    canvas.MouseUp -= MouseLeft;
+                    canvas.MouseMove -= GetMousePosition;
+                }
+            }
         }
     }
 }

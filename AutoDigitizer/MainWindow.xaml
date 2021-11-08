@@ -20,7 +20,7 @@
                 <Button Content="Reference..." FontSize="12" Command="{Binding OFDCommand}"/>
             </Expander>
             <Expander Header="Set Axis" FontSize="16">
-                <TextBlock Text="Set Axis" TextWrapping="Wrap"/>
+                <Button Content="Reset" FontSize="12" Command="{Binding OFDCommand}"/>
             </Expander>
             <Expander Header="Extract Line" FontSize="16">
                 <TextBlock Text="Extract Line" TextWrapping="Wrap"/>
@@ -30,6 +30,7 @@
         <Image Grid.Column="1" Margin="10,10,10,10" Source="{Binding ImageSource}">
         </Image>
         <Canvas Grid.Column="1" Margin="10,10,10,10" Panel.ZIndex="1" Background="Transparent"
+                b:CanvasMouseDraggingBehavior.EnableDragging="{Binding AxisSelectionMode}"
                 b:CanvasMouseDraggingBehavior.StartPos="{Binding AxisStartPos, Mode=TwoWay}"
                 b:CanvasMouseDraggingBehavior.CursorPos="{Binding AxisEndPos, Mode=TwoWay}">
             <Rectangle Stroke="Black" StrokeThickness="2"

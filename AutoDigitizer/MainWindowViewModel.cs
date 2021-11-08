@@ -24,19 +24,22 @@ namespace AutoDigitizer {
         /// <summary>
         /// The width of axis of the chart in display dimension.
         /// </summary>
-        public Double AxisWidth { get; private set; } = 100;
+        public Double AxisWidth { get; private set; } = 0;
         /// <summary>
         /// The height of axis of the chart in display dimension.
         /// </summary>
-        public Double AxisHeight { get; private set; } = 100;
+        public Double AxisHeight { get; private set; } = 0;
         /// <summary>
         /// The Left position of axis of the chart in display dimension.
         /// </summary>
-        public Double AxisLeft { get; private set; } = 10;
+        public Double AxisLeft { get; private set; } = 0;
         /// <summary>
         /// The Top position of axis of the chart in display dimension.
         /// </summary>
-        public Double AxisTop { get; private set; } = 10;
+        public Double AxisTop { get; private set; } = 0;
+
+
+        public bool AxisSelectionMode { get; set; } = false;
 
         private Point axisStartPos_;
         public Point AxisStartPos {
@@ -68,6 +71,9 @@ namespace AutoDigitizer {
 
             this.RaisePropertyChanged(nameof(FigurePath));
             this.RaisePropertyChanged(nameof(ImageSource));
+
+            this.AxisSelectionMode = true;
+            this.RaisePropertyChanged(nameof(AxisSelectionMode));
         }
 
         private void calcAxisRect() {
